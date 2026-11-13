@@ -1,0 +1,129 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Registrar cliente | VetCare
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h1 class="fw-bold">Registrar cliente</h1>
+            <p class="text-muted">
+                Introduce los datos del propietario de la mascota.
+            </p>
+        </div>
+
+        <a href="{{ url_for('clientes.listar') }}"
+           class="btn btn-secondary">
+            Volver
+        </a>
+
+    </div>
+
+    <div class="card shadow-sm">
+
+        <div class="card-body p-4">
+
+            <form method="POST">
+
+                {{ form.hidden_tag() }}
+
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+
+                        {{ form.nombre.label(class="form-label") }}
+
+                        {{ form.nombre(class="form-control", placeholder="Nombre del cliente") }}
+
+                        {% for error in form.nombre.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        {{ form.apellido.label(class="form-label") }}
+
+                        {{ form.apellido(class="form-control", placeholder="Apellido del cliente") }}
+
+                        {% for error in form.apellido.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        {{ form.ci.label(class="form-label") }}
+
+                        {{ form.ci(class="form-control", placeholder="Número de CI") }}
+
+                        {% for error in form.ci.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        {{ form.telefono.label(class="form-label") }}
+
+                        {{ form.telefono(class="form-control", placeholder="Número de teléfono") }}
+
+                        {% for error in form.telefono.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        {{ form.email.label(class="form-label") }}
+
+                        {{ form.email(class="form-control", placeholder="correo@ejemplo.com") }}
+
+                        {% for error in form.email.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        {{ form.direccion.label(class="form-label") }}
+
+                        {{ form.direccion(class="form-control", placeholder="Dirección del cliente") }}
+
+                        {% for error in form.direccion.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+                <hr class="my-4">
+
+                {{ form.submit(class="btn btn-primary px-4") }}
+
+                <a href="{{ url_for('clientes.listar') }}"
+                   class="btn btn-outline-secondary">
+                    Cancelar
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

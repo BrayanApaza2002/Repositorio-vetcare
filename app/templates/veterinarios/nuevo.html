@@ -1,0 +1,106 @@
+
+{% extends "base.html" %}
+
+{% block title %}Registrar veterinario - VetCare{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2>Registrar veterinario</h2>
+            <p class="text-muted">
+                Registra los datos del profesional veterinario.
+            </p>
+        </div>
+
+        <a href="{{ url_for('veterinarios.listar') }}"
+           class="btn btn-secondary">
+            Volver al listado
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <form method="POST">
+
+                {{ form.hidden_tag() }}
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        {{ form.nombre.label(class="form-label") }}
+                        {{ form.nombre(class="form-control") }}
+                        {% for error in form.nombre.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        {{ form.apellido.label(class="form-label") }}
+                        {{ form.apellido(class="form-control") }}
+                        {% for error in form.apellido.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        {{ form.ci.label(class="form-label") }}
+                        {{ form.ci(class="form-control") }}
+                        {% for error in form.ci.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        {{ form.telefono.label(class="form-label") }}
+                        {{ form.telefono(class="form-control") }}
+                        {% for error in form.telefono.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        {{ form.email.label(class="form-label") }}
+                        {{ form.email(class="form-control") }}
+                        {% for error in form.email.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        {{ form.especialidad.label(class="form-label") }}
+                        {{ form.especialidad(class="form-control") }}
+                    </div>
+
+                    <div class="col-md-12 mb-3">
+                        {{ form.matricula_profesional.label(class="form-label") }}
+                        {{ form.matricula_profesional(class="form-control") }}
+                        {% for error in form.matricula_profesional.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <div class="d-flex gap-2">
+                    {{ form.submit(class="btn btn-primary") }}
+
+                    <a href="{{ url_for('veterinarios.listar') }}"
+                       class="btn btn-outline-secondary">
+                        Cancelar
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

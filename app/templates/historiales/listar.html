@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block title %}Historiales clínicos - VetCare{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2>Historiales clínicos</h2>
+            <p class="text-muted">
+                Consulta los antecedentes médicos de las mascotas.
+            </p>
+        </div>
+
+        <a href="{{ url_for('historiales.nuevo') }}"
+           class="btn btn-primary">
+            Registrar historial
+        </a>
+
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            {% if historiales %}
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Fecha de consulta</th>
+                                <th>Mascota</th>
+                                <th>Propietario</th>
+                                <th>Veterinario</th>
+                                <th>Diagnóstico</th>
+                                <th>Tratamiento</th>
+                                <th>Peso</th>
+                                <th>Temperatura</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {% for historial in historiales %}
+
+                                <tr>
+
+                                    <td>{{ historial.id }}</td>
+
+                                    <td>
+                                        {{ historial.fecha_consulta.strftime('%d/%m/%Y %H:%M') }}
+                                    </td>
+
+                                    <td>
+                                        {{ historial.mascota.nombre }}
+                                    </td>
+
+                                    <td>
+                                        {{ historial.mascota.cliente.nombre }}
+                                        {{ historial.mascota.cliente.apellido }}
+                                    </td>
+
+                                    <td>
+                                        {{ historial.veterinario.nombre }}
+                                        {{ historial.veterinario.apellido }}
+                                    </td>
+
+                                    <td>
+                                        {{ historial.diagnostico }}
+                                    </td>
+
+                                    <td>
+                                        {{ historial.tratamiento }}
+                                    </td>
+
+                                    <td>
+                                        {% if historial.peso is not none %}
+                                            {{ historial.peso }} kg
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
+
+                                    <td>
+                                        {% if historial.temperatura is not none %}
+                                            {{ historial.temperatura }} °C
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
+
+
+<td>
+    <div class="d-flex gap-2">
+
+        <a href="{{ url_for('historiales.editar', id=historial.id) }}"
+           class="btn btn-warning btn-sm">
+            Modificar
+        </a>
+
+        <form method="POST"
+              action="{{ url_for('historiales.eliminar', id=historial.id) }}"
+              onsubmit="return confirm('¿Estás seguro de eliminar este historial clínico?');">
+
+            <input type="hidden" name="csrf_token"
+                   value="{{ csrf_token() }}">
+
+            <button type="submit" class="btn btn-danger btn-sm">
+                Eliminar
+            </button>
+
+        </form>
+
+    </div>
+</td>
+
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            {% else %}
+
+                <div class="text-center py-4">
+
+                    <h5>No hay historiales clínicos registrados</h5>
+
+                    <p class="text-muted">
+                        Todavía no existen consultas médicas registradas.
+                    </p>
+
+                    <a href="{{ url_for('historiales.nuevo') }}"
+                       class="btn btn-primary">
+                        Registrar primer historial
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

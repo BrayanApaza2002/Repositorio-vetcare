@@ -1,0 +1,68 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Inicio | VetCare
+{% endblock %}
+
+{% block content %}
+
+<div class="p-5 mb-4 bg-light rounded-3 shadow-sm">
+    <div class="container-fluid py-3">
+
+        <h1 class="display-5 fw-bold">
+            Bienvenido a VetCare
+        </h1>
+
+        <p class="col-md-8 fs-5">
+            Sistema de gestión veterinaria para administrar
+            clientes, mascotas, citas e historiales clínicos.
+        </p>
+
+        <hr>
+
+        <p class="text-muted">
+            Administra tu centro veterinario de manera sencilla y organizada.
+        </p>
+
+    </div>
+</div>
+
+<div class="row g-4">
+
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Clientes</h5>
+                <p class="card-text">
+                    Registra y administra la información de los propietarios.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Mascotas</h5>
+                <p class="card-text">
+                    Gestiona los datos y la información de las mascotas.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Citas</h5>
+                <p class="card-text">
+                    Organiza las consultas y las citas veterinarias.
+                </p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

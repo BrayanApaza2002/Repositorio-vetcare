@@ -1,0 +1,71 @@
+
+{% extends "base.html" %}
+
+{% block title %}Iniciar sesión | VetCare{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-5 col-lg-4">
+
+        <div class="card shadow p-4">
+            <div class="card-body">
+
+                <h2 class="text-center mb-4">
+                    Iniciar sesión
+                </h2>
+
+                <p class="text-center text-muted">
+                    Accede al sistema VetCare
+                </p>
+
+                <form method="POST">
+
+                    {{ form.hidden_tag() }}
+
+                    <div class="mb-3">
+                        {{ form.email.label(class="form-label") }}
+                        {{ form.email(
+                            class="form-control",
+                            placeholder="usuario@correo.com"
+                        ) }}
+
+                        {% for error in form.email.errors %}
+                            <div class="text-danger small">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.password.label(class="form-label") }}
+                        {{ form.password(
+                            class="form-control",
+                            placeholder="Ingresa tu contraseña"
+                        ) }}
+
+                        {% for error in form.password.errors %}
+                            <div class="text-danger small">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    {{ form.submit(class="btn btn-primary w-100") }}
+
+                </form>
+
+                <p class="text-center mt-3 mb-0">
+                    ¿No tienes una cuenta?
+                    <a href="{{ url_for('auth.register') }}">
+                        Regístrate aquí
+                    </a>
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

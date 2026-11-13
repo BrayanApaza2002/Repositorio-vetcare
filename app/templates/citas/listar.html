@@ -1,0 +1,170 @@
+
+{% extends "base.html" %}
+
+{% block title %}Gestión de citas - VetCare{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2>Gestión de citas</h2>
+            <p class="text-muted">
+                Administra las consultas veterinarias programadas.
+            </p>
+        </div>
+
+        <a href="{{ url_for('citas.nuevo') }}"
+           class="btn btn-primary">
+            Registrar cita
+        </a>
+
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            {% if citas %}
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Fecha y hora</th>
+                                <th>Propietario</th>
+                                <th>Mascota</th>
+                                <th>Veterinario</th>
+                                <th>Motivo</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {% for cita in citas %}
+
+                                <tr>
+                                    <td>{{ cita.id }}</td>
+
+                                    <td>
+                                        {{ cita.fecha_hora.strftime('%d/%m/%Y %H:%M') }}
+                                    </td>
+
+                                    <td>
+                                        {{ cita.cliente.nombre }}
+                                        {{ cita.cliente.apellido }}
+                                    </td>
+
+                                    <td>
+                                        {{ cita.mascota.nombre }}
+                                    </td>
+
+                                    <td>
+                                        {{ cita.veterinario.nombre }}
+                                        {{ cita.veterinario.apellido }}
+                                    </td>
+
+                                    <td>{{ cita.motivo }}</td>
+
+                                    <td>
+    <form action="{{ url_for('citas.cambiar_estado', id=cita.id) }}"
+          method="POST">
+
+        <input type="hidden" name="csrf_token"
+               value="{{ csrf_token() }}">
+
+        <select name="estado"
+        class="form-select form-select-sm"
+        style="min-width: 130px;"
+        onchange="this.form.submit()">
+
+            <option value="pendiente"
+                {% if cita.estado == 'pendiente' %}selected{% endif %}>
+                Pendiente
+            </option>
+
+            <option value="confirmada"
+                {% if cita.estado == 'confirmada' %}selected{% endif %}>
+                Confirmada
+            </option>
+
+            <option value="completada"
+                {% if cita.estado == 'completada' %}selected{% endif %}>
+                Completada
+            </option>
+
+            <option value="cancelada"
+                {% if cita.estado == 'cancelada' %}selected{% endif %}>
+                Cancelada
+            </option>
+
+        </select>
+
+    </form>
+</td>
+
+                                    <td>
+    <div class="d-flex gap-2">
+
+        <a href="{{ url_for('citas.editar', id=cita.id) }}"
+           class="btn btn-sm btn-warning">
+            Modificar
+        </a>
+
+        <form action="{{ url_for('citas.eliminar', id=cita.id) }}"
+              method="POST"
+              onsubmit="return confirm('¿Estás seguro de eliminar esta cita?');">
+
+            <input type="hidden" name="csrf_token"
+                   value="{{ csrf_token() }}">
+
+            <button type="submit" class="btn btn-sm btn-danger">
+                Eliminar
+            </button>
+
+        </form>
+
+    </div>
+</td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            {% else %}
+
+                <div class="text-center py-4">
+
+                    <h5>No hay citas registradas</h5>
+
+                    <p class="text-muted">
+                        Todavía no existen consultas programadas.
+                    </p>
+
+                    <a href="{{ url_for('citas.nuevo') }}"
+                       class="btn btn-primary">
+                        Registrar primera cita
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

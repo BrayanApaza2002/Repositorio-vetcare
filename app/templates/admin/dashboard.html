@@ -1,0 +1,183 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Panel administrativo | VetCare
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- Encabezado -->
+    <div class="mb-4">
+        <h1 class="fw-bold">Panel administrativo</h1>
+        <p class="text-muted">
+            Bienvenido al sistema de gestión veterinaria VetCare.
+        </p>
+    </div>
+
+    <!-- Información del administrador -->
+    <div class="alert alert-primary">
+        <strong>Administrador:</strong>
+        {{ current_user.nombre }} {{ current_user.apellido }}
+        <br>
+        <strong>Rol:</strong> {{ current_user.rol }}
+    </div>
+
+    <!-- Estadísticas generales -->
+    <h5 class="fw-bold mb-3">Estadísticas generales</h5>
+
+    <div class="row g-4">
+
+        <div class="col-md-6 col-xl-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-muted">Total de clientes</h6>
+                    <h2 class="fw-bold text-primary">{{ total_clientes }}</h2>
+                    <p class="mb-0">Propietarios registrados</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-muted">Total de mascotas</h6>
+                    <h2 class="fw-bold text-success">{{ total_mascotas }}</h2>
+                    <p class="mb-0">Mascotas registradas</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-muted">Total de veterinarios</h6>
+                    <h2 class="fw-bold text-info">{{ total_veterinarios }}</h2>
+                    <p class="mb-0">Profesionales registrados</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-muted">Total de citas</h6>
+                    <h2 class="fw-bold text-warning">{{ total_citas }}</h2>
+                    <p class="mb-0">Citas registradas</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Resumen financiero -->
+    <h5 class="fw-bold mt-5 mb-3">Resumen financiero</h5>
+
+    <div class="row g-4">
+
+        <div class="col-md-6 col-xl-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-muted">Total de pagos</h6>
+                    <h2 class="fw-bold text-primary">{{ total_pagos }}</h2>
+                    <p class="mb-0">Registros de pagos realizados</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-muted">Ingresos confirmados</h6>
+                    <h2 class="fw-bold text-success">
+                        Bs {{ "%.2f"|format(ingresos_confirmados) }}
+                    </h2>
+                    <p class="mb-0">Total de pagos con estado pagado</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-muted">Pagos pendientes</h6>
+                    <h2 class="fw-bold text-warning">{{ pagos_pendientes }}</h2>
+                    <p class="mb-0">Pagos pendientes de confirmación</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Gráficos estadísticos -->
+    <h5 class="fw-bold mt-5 mb-3">Estadísticas visuales</h5>
+
+    <div class="row g-4">
+
+        <!-- Citas por estado -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Citas por estado</h5>
+                    <div style="height: 300px;">
+                        <canvas
+                            id="graficoCitas"
+                            data-labels='{{ etiquetas_citas | tojson }}'
+                            data-values='{{ datos_citas | tojson }}'>
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mascotas por especie -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Mascotas por especie</h5>
+                    <div style="height: 300px;">
+                        <canvas
+                            id="graficoEspecies"
+                            data-labels='{{ etiquetas_especies | tojson }}'
+                            data-values='{{ datos_especies | tojson }}'>
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ingresos mensuales -->
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Ingresos mensuales</h5>
+                    <div style="height: 350px;">
+                        <canvas
+                            id="graficoIngresos"
+                            data-labels='{{ etiquetas_meses | tojson }}'
+                            data-values='{{ datos_ingresos | tojson }}'>
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Información general -->
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+            <h5 class="fw-bold">Resumen del sistema</h5>
+            <p class="text-muted mb-0">
+                Desde este panel podrás administrar los clientes,
+                mascotas, veterinarios, citas, historiales clínicos,
+                vacunas y pagos del centro veterinario.
+            </p>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

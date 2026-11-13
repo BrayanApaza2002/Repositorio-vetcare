@@ -1,0 +1,96 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Modificar cliente | VetCare
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="mb-4">
+        <h1 class="fw-bold">Modificar cliente</h1>
+        <p class="text-muted">
+            Actualiza la información del propietario.
+        </p>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <form method="POST">
+
+                {{ form.hidden_tag() }}
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        {{ form.nombre.label(class="form-label") }}
+                        {{ form.nombre(class="form-control") }}
+                        {% for error in form.nombre.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        {{ form.apellido.label(class="form-label") }}
+                        {{ form.apellido(class="form-control") }}
+                        {% for error in form.apellido.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        {{ form.ci.label(class="form-label") }}
+                        {{ form.ci(class="form-control") }}
+                        {% for error in form.ci.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        {{ form.telefono.label(class="form-label") }}
+                        {{ form.telefono(class="form-control") }}
+                        {% for error in form.telefono.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        {{ form.email.label(class="form-label") }}
+                        {{ form.email(class="form-control") }}
+                        {% for error in form.email.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        {{ form.direccion.label(class="form-label") }}
+                        {{ form.direccion(class="form-control") }}
+                        {% for error in form.direccion.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+
+                <div class="d-flex gap-2 mt-3">
+
+                    {{ form.submit(class="btn btn-primary", value="Actualizar cliente") }}
+
+                    <a href="{{ url_for('clientes.listar') }}"
+                       class="btn btn-secondary">
+                        Cancelar
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

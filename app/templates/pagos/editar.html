@@ -1,0 +1,147 @@
+﻿{% extends "base.html" %}
+
+{% block title %}Editar pago - VetCare{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <div class="mb-4">
+        <h2>Editar pago</h2>
+        <p class="text-muted">
+            Modifica la información y registra el cobro correspondiente.
+        </p>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            {% if pago.vacuna %}
+                <div class="alert alert-info">
+                    <h5 class="alert-heading">Pago generado por vacunación</h5>
+
+                    <p class="mb-1">
+                        <strong>Vacuna:</strong> {{ pago.vacuna.nombre }}
+                    </p>
+
+                    <p class="mb-1">
+                        <strong>Mascota:</strong> {{ pago.vacuna.mascota.nombre }}
+                    </p>
+
+                    <p class="mb-1">
+                        <strong>Propietario:</strong>
+                        {{ pago.cliente.nombre }} {{ pago.cliente.apellido }}
+                    </p>
+
+                    <p class="mb-0">
+                        <strong>Precio registrado:</strong>
+                        Bs {{ "%.2f"|format(pago.monto) }}
+                    </p>
+                </div>
+            {% endif %}
+
+            <form method="POST">
+                {{ form.hidden_tag() }}
+
+                <div class="mb-3">
+                    {{ form.concepto.label(class="form-label") }}
+                    {{ form.concepto(class="form-control") }}
+
+                    {% for error in form.concepto.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.monto.label(class="form-label") }}
+                    {{ form.monto(class="form-control", step="0.01", min="0.01") }}
+
+                    {% for error in form.monto.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.metodo_pago.label(class="form-label") }}
+                    {{ form.metodo_pago(class="form-select") }}
+
+                    {% for error in form.metodo_pago.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.fecha_pago.label(class="form-label") }}
+                    {{ form.fecha_pago(class="form-control") }}
+
+                    {% for error in form.fecha_pago.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.estado.label(class="form-label") }}
+                    {{ form.estado(class="form-select") }}
+
+                    {% for error in form.estado.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.cliente_id.label(class="form-label") }}
+                    {{ form.cliente_id(class="form-select") }}
+
+                    {% for error in form.cliente_id.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.cita_id.label(class="form-label") }}
+                    {{ form.cita_id(class="form-select") }}
+
+                    {% for error in form.cita_id.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.comprobante.label(class="form-label") }}
+                    {{ form.comprobante(class="form-control") }}
+
+                    {% for error in form.comprobante.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.observaciones.label(class="form-label") }}
+                    {{ form.observaciones(class="form-control", rows="3") }}
+
+                    {% for error in form.observaciones.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="alert alert-warning">
+                    <strong>Atención:</strong>
+                    Al marcar un pago como pagado, registra también el método y la fecha
+                    en que se realizó el cobro.
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        Guardar cambios
+                    </button>
+
+                    <a href="{{ url_for('pagos.listar') }}" class="btn btn-secondary">
+                        Cancelar
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

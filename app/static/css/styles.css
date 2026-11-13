@@ -1,0 +1,60 @@
+
+/* =================================
+   ESTILOS GENERALES DE VETCARE
+================================= */
+
+body {
+    background-color: #f5f7fa;
+    color: #333333;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+}
+
+/* Barra de navegación */
+
+.navbar {
+    background-color: #1769aa !important;
+}
+
+.navbar-brand {
+    font-size: 1.4rem;
+    letter-spacing: 0.5px;
+}
+
+/* Contenido principal */
+
+main {
+    min-height: 75vh;
+}
+
+/* Panel de bienvenida */
+
+.bg-light {
+    background-color: #ffffff !important;
+    border: 1px solid #e5e7eb;
+}
+
+/* Tarjetas */
+
+.card {
+    border: none;
+    border-radius: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.10);
+}
+
+.card-title {
+    color: #1769aa;
+    font-weight: bold;
+}
+
+/* Pie de página */
+
+footer {
+    background-color: #ffffff;
+    margin-top: 30px;
+}

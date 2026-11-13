@@ -1,0 +1,158 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Mascotas | VetCare
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h1 class="fw-bold">Gestión de mascotas</h1>
+
+            <p class="text-muted">
+                Administra las mascotas registradas en VetCare.
+            </p>
+        </div>
+
+        <a href="{{ url_for('mascotas.nuevo') }}"
+           class="btn btn-primary">
+            + Registrar mascota
+        </a>
+
+    </div>
+
+    <div class="card shadow-sm">
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Especie</th>
+                            <th>Raza</th>
+                            <th>Sexo</th>
+                            <th>Peso</th>
+                            <th>Propietario</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for mascota in mascotas %}
+
+                            <tr>
+                                <td>{{ mascota.id }}</td>
+
+                                <td>{{ mascota.nombre }}</td>
+
+                                <td>{{ mascota.especie|capitalize }}</td>
+
+                                <td>{{ mascota.raza or "No especificada" }}</td>
+
+                                <td>{{ mascota.sexo|capitalize }}</td>
+
+                                <td>
+                                    {{ mascota.peso if mascota.peso is not none else "No registrado" }}
+                                    {% if mascota.peso is not none %} kg{% endif %}
+                                </td>
+
+                                <td>
+                                    {{ mascota.cliente.nombre }}
+                                    {{ mascota.cliente.apellido }}
+                                </td>
+
+                                <td>
+    <div class="d-flex gap-2">
+
+        <a href="{{ url_for('mascotas.editar', id=mascota.id) }}"
+           class="btn btn-sm btn-warning">
+            Modificar
+        </a>
+
+        {% if mascota.activo %}
+
+            <form method="POST"
+                  action="{{ url_for('mascotas.eliminar', id=mascota.id) }}"
+                  onsubmit="return confirm('¿Estás seguro de desactivar esta mascota?');">
+
+                <input type="hidden"
+                       name="csrf_token"
+                       value="{{ csrf_token() }}">
+
+                <button type="submit" class="btn btn-sm btn-danger">
+                    Eliminar
+                </button>
+            </form>
+
+        {% else %}
+
+            <form method="POST"
+                  action="{{ url_for('mascotas.activar', id=mascota.id) }}"
+                  onsubmit="return confirm('¿Deseas activar esta mascota?');">
+
+                <input type="hidden"
+                       name="csrf_token"
+                       value="{{ csrf_token() }}">
+
+                <button type="submit" class="btn btn-sm btn-success">
+                    Activar
+                </button>
+            </form>
+
+
+        {% endif %}
+
+        <form method="POST"
+              action="{{ url_for('mascotas.eliminar_definitivamente', id=mascota.id) }}"
+              onsubmit="return confirm('ADVERTENCIA: Esta acción eliminará definitivamente a la mascota. ¿Deseas continuar?');">
+
+            <input type="hidden"
+                   name="csrf_token"
+                   value="{{ csrf_token() }}">
+
+            <button type="submit" class="btn btn-sm btn-dark">
+                Borrar
+            </button>
+
+        </form>
+
+    </div>
+</td>
+
+
+                            </tr>
+
+                        {% else %}
+
+                            <tr>
+                                <td colspan="8" class="text-center text-muted py-4">
+                                    Todavía no hay mascotas registradas.
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

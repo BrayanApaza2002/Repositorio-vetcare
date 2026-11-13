@@ -1,0 +1,125 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Modificar mascota | VetCare
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="fw-bold">Modificar mascota</h1>
+            <p class="text-muted">
+                Actualiza la información de {{ mascota.nombre }}.
+            </p>
+        </div>
+
+        <a href="{{ url_for('mascotas.listar') }}"
+           class="btn btn-secondary">
+            Volver
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <form method="POST">
+
+                {{ form.hidden_tag() }}
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        {{ form.nombre.label(class="form-label") }}
+                        {{ form.nombre(class="form-control") }}
+                        {% for error in form.nombre.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        {{ form.especie.label(class="form-label") }}
+                        {{ form.especie(class="form-select") }}
+                        {% for error in form.especie.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        {{ form.raza.label(class="form-label") }}
+                        {{ form.raza(class="form-control") }}
+                        {% for error in form.raza.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        {{ form.sexo.label(class="form-label") }}
+                        {{ form.sexo(class="form-select") }}
+                        {% for error in form.sexo.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        {{ form.fecha_nacimiento.label(class="form-label") }}
+                        {{ form.fecha_nacimiento(class="form-control") }}
+                        {% for error in form.fecha_nacimiento.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        {{ form.color.label(class="form-label") }}
+                        {{ form.color(class="form-control") }}
+                        {% for error in form.color.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        {{ form.peso.label(class="form-label") }}
+                        {{ form.peso(class="form-control", step="0.01") }}
+                        {% for error in form.peso.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        {{ form.cliente_id.label(class="form-label") }}
+                        {{ form.cliente_id(class="form-select") }}
+                        {% for error in form.cliente_id.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-12 mb-3">
+                        {{ form.observaciones.label(class="form-label") }}
+                        {{ form.observaciones(class="form-control", rows="4") }}
+                        {% for error in form.observaciones.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                </div>
+
+                <div class="d-flex gap-2">
+                    {{ form.submit(class="btn btn-primary", value="Guardar cambios") }}
+
+                    <a href="{{ url_for('mascotas.listar') }}"
+                       class="btn btn-outline-secondary">
+                        Cancelar
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

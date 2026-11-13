@@ -1,0 +1,172 @@
+
+{% extends "base.html" %}
+
+{% block title %}Gestión de usuarios - VetCare{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-1">Gestión de usuarios</h2>
+            <p class="text-muted mb-0">
+                Administración de cuentas, cargos y permisos del sistema.
+            </p>
+        </div>
+
+        <a href="{{ url_for('usuarios.registrar') }}"
+           class="btn btn-primary">
+            <i class="bi bi-person-plus"></i>
+            Registrar usuario
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-white">
+            <h5 class="mb-0">Usuarios registrados</h5>
+        </div>
+
+        <div class="card-body">
+            {% if usuarios %}
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre completo</th>
+                            <th>Correo electrónico</th>
+                            <th>Cargo</th>
+                            <th>Rol</th>
+                            <th>Estado</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for usuario in usuarios %}
+                        <tr>
+                            <td>{{ usuario.id }}</td>
+
+                            <td>
+                                <strong>
+                                    {{ usuario.nombre }} {{ usuario.apellido }}
+                                </strong>
+                                {% if usuario.id == current_user.id %}
+                                    <span class="badge bg-info">Tú</span>
+                                {% endif %}
+                            </td>
+
+                            <td>{{ usuario.email }}</td>
+
+                            <td>{{ usuario.cargo }}</td>
+
+                            <td>
+                                {% if usuario.rol == "administrador" %}
+                                    <span class="badge bg-danger">Administrador</span>
+                                {% elif usuario.rol == "veterinario" %}
+                                    <span class="badge bg-success">Veterinario</span>
+                                    {% elif usuario.rol == "recepcionista" %}
+                                    <span class="badge bg-primary">Recepcionista</span>
+                                    {% elif usuario.rol == "cajero" %}
+                                    <span class="badge bg-warning text-dark">Cajero</span>
+                                    {% elif usuario.rol == "usuario" %}
+                                    <span class="badge bg-secondary">Usuario</span>
+                                     {% else %}
+                                     <span class="badge bg-dark">{{ usuario.rol }}</span>
+                                     {% endif %}
+                                </td>
+
+                            <td>
+                                {% if usuario.activo %}
+                                    <span class="badge bg-success">
+                                        Activo
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-secondary">
+                                        Inactivo
+                                    </span>
+                                {% endif %}
+                            </td>
+
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-1 flex-wrap">
+
+                                    <a href="{{ url_for('usuarios.editar', usuario_id=usuario.id) }}"
+                                       class="btn btn-sm btn-warning"
+                                       title="Editar usuario">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+
+                                    <a href="{{ url_for('usuarios.restablecer_password', usuario_id=usuario.id) }}"
+                                       class="btn btn-sm btn-info"
+                                       title="Restablecer contraseña">
+                                        <i class="bi bi-key"></i>
+                                    </a>
+
+                                    {% if usuario.id != current_user.id %}
+                                    <form method="POST"
+                                          action="{{ url_for('usuarios.cambiar_estado', usuario_id=usuario.id) }}"
+                                          class="d-inline">
+
+                                        <input type="hidden"
+                                               name="csrf_token"
+                                               value="{{ csrf_token() }}">
+
+                                        <button type="submit"
+                                                class="btn btn-sm {% if usuario.activo %}btn-secondary{% else %}btn-success{% endif %}"
+                                                title="{% if usuario.activo %}Desactivar{% else %}Activar{% endif %}">
+                                            {% if usuario.activo %}
+                                                <i class="bi bi-person-x"></i>
+                                            {% else %}
+                                                <i class="bi bi-person-check"></i>
+                                            {% endif %}
+                                        </button>
+                                    </form>
+
+                                    <form method="POST"
+                                          action="{{ url_for('usuarios.eliminar', usuario_id=usuario.id) }}"
+                                          class="d-inline"
+                                          onsubmit="return confirm('¿Estás seguro de eliminar este usuario definitivamente?');">
+
+                                        <input type="hidden"
+                                               name="csrf_token"
+                                               value="{{ csrf_token() }}">
+
+                                        <button type="submit"
+                                                class="btn btn-sm btn-danger"
+                                                title="Eliminar usuario">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                    {% endif %}
+
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% else %}
+                <div class="text-center py-5">
+                    <i class="bi bi-people display-4 text-muted"></i>
+                    <h5 class="mt-3">No hay usuarios registrados</h5>
+                    <p class="text-muted">
+                        Registra el primer usuario del sistema.
+                    </p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <a href="{{ url_for('admin.dashboard') }}"
+           class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i>
+            Volver al panel administrativo
+        </a>
+    </div>
+
+</div>
+{% endblock %}

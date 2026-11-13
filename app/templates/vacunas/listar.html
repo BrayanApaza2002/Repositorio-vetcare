@@ -1,0 +1,179 @@
+
+{% extends "base.html" %}
+
+{% block title %}Vacunas - VetCare{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2>Gestión de vacunas</h2>
+            <p class="text-muted">
+                Administra las vacunas aplicadas y sus pagos asociados.
+            </p>
+        </div>
+
+        <a href="{{ url_for('vacunas.nuevo') }}" class="btn btn-primary">
+            Registrar vacuna
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            {% if vacunas %}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Vacuna</th>
+                                <th>Precio</th>
+                                <th>Mascota</th>
+                                <th>Propietario</th>
+                                <th>Veterinario</th>
+                                <th>Aplicación</th>
+                                <th>Próxima aplicación</th>
+                                <th>Pago</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for vacuna in vacunas %}
+                                <tr>
+                                    <td>{{ vacuna.id }}</td>
+
+                                    <td>{{ vacuna.nombre }}</td>
+
+                                    <td>
+                                        {% if vacuna.precio is not none %}
+                                            Bs {{ "%.2f"|format(vacuna.precio) }}
+                                        {% else %}
+                                            <span class="text-muted">Sin precio</span>
+                                        {% endif %}
+                                    </td>
+
+                                    <td>{{ vacuna.mascota.nombre }}</td>
+
+                                    <td>
+                                        {{ vacuna.mascota.cliente.nombre }}
+                                        {{ vacuna.mascota.cliente.apellido }}
+                                    </td>
+
+                                    <td>
+                                        {{ vacuna.veterinario.nombre }}
+                                        {{ vacuna.veterinario.apellido }}
+                                    </td>
+
+                                    <td>
+                                        {{ vacuna.fecha_aplicacion.strftime('%d/%m/%Y') }}
+                                    </td>
+
+                                    <td>
+                                        {% if vacuna.fecha_proxima %}
+                                            {{ vacuna.fecha_proxima.strftime('%d/%m/%Y') }}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
+
+
+<td>
+    {% if vacuna.pago %}
+        <div class="d-flex flex-column gap-1">
+
+            {% if vacuna.pago.estado == "pagado" %}
+                <span class="badge bg-success">Pagado</span>
+            {% elif vacuna.pago.estado == "pendiente" %}
+                <span class="badge bg-warning text-dark">Pendiente</span>
+            {% elif vacuna.pago.estado == "cancelado" %}
+                <span class="badge bg-danger">Cancelado</span>
+            {% else %}
+                <span class="badge bg-secondary">
+                    {{ vacuna.pago.estado }}
+                </span>
+            {% endif %}
+
+            <small class="text-muted">
+                Bs {{ "%.2f"|format(vacuna.pago.monto) }}
+            </small>
+
+            {% if current_user.rol in ["administrador", "cajero"] %}
+                <a href="{{ url_for('pagos.editar', id=vacuna.pago.id) }}"
+                   class="btn btn-sm btn-outline-primary">
+                    Ver pago #{{ vacuna.pago.id }}
+                </a>
+            {% else %}
+                <small class="text-muted">
+                    Pago #{{ vacuna.pago.id }}
+                </small>
+            {% endif %}
+
+        </div>
+    {% else %}
+        <span class="badge bg-secondary">
+            Sin pago asociado
+        </span>
+    {% endif %}
+</td>
+
+
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <a href="{{ url_for('vacunas.editar', id=vacuna.id) }}"
+                                               class="btn btn-sm btn-warning">
+                                                Modificar
+                                            </a>
+
+                                            {% if not vacuna.pago %}
+                                                <form method="POST"
+                                                      action="{{ url_for('vacunas.eliminar', id=vacuna.id) }}"
+                                                      onsubmit="return confirm('¿Estás seguro de eliminar este registro de vacunación?');">
+
+                                                    <input type="hidden"
+                                                           name="csrf_token"
+                                                           value="{{ csrf_token() }}">
+
+                                                    <button type="submit"
+                                                            class="btn btn-sm btn-danger">
+                                                        Eliminar
+                                                    </button>
+                                                </form>
+                                            {% else %}
+                                                <button type="button"
+                                                        class="btn btn-sm btn-secondary"
+                                                        disabled
+                                                        title="La vacuna tiene un pago asociado">
+                                                    Protegida
+                                                </button>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+                </div>
+
+            {% else %}
+                <div class="text-center py-4">
+                    <h5>No hay vacunas registradas</h5>
+                    <p class="text-muted">
+                        Todavía no existen vacunas registradas en VetCare.
+                    </p>
+
+                    <a href="{{ url_for('vacunas.nuevo') }}"
+                       class="btn btn-primary">
+                        Registrar primera vacuna
+                    </a>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}

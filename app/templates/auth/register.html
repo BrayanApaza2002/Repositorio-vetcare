@@ -1,0 +1,78 @@
+
+{% extends "base.html" %}
+
+{% block title %}Crear cuenta | VetCare{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow p-4">
+            <div class="card-body">
+
+                <h2 class="text-center mb-3">Crear una cuenta</h2>
+
+                <p class="text-center text-muted">
+                    Regístrate para crear tu usuario en VetCare
+                </p>
+
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+
+                    <div class="mb-3">
+                        {{ form.nombre.label(class="form-label") }}
+                        {{ form.nombre(class="form-control", placeholder="Ingresa tu nombre") }}
+
+                        {% for error in form.nombre.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.apellido.label(class="form-label") }}
+                        {{ form.apellido(class="form-control", placeholder="Ingresa tu apellido") }}
+
+                        {% for error in form.apellido.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.email.label(class="form-label") }}
+                        {{ form.email(class="form-control", placeholder="usuario@correo.com") }}
+
+                        {% for error in form.email.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.password.label(class="form-label") }}
+                        {{ form.password(class="form-control", placeholder="Mínimo 8 caracteres") }}
+
+                        {% for error in form.password.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.confirm_password.label(class="form-label") }}
+                        {{ form.confirm_password(class="form-control", placeholder="Repite tu contraseña") }}
+
+                        {% for error in form.confirm_password.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    {{ form.submit(class="btn btn-primary w-100") }}
+                </form>
+
+                <p class="text-center mt-3 mb-0">
+                    ¿Ya tienes una cuenta?
+                    <a href="{{ url_for('auth.login') }}">Inicia sesión</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

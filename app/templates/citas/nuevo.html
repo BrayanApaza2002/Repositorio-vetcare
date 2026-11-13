@@ -1,0 +1,108 @@
+
+{% extends "base.html" %}
+
+{% block title %}Registrar cita - VetCare{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2>Registrar cita veterinaria</h2>
+            <p class="text-muted">
+                Programa una consulta para una mascota.
+            </p>
+        </div>
+
+        <a href="{{ url_for('citas.listar') }}"
+           class="btn btn-secondary">
+            Volver al listado
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <form method="POST">
+
+                {{ form.hidden_tag() }}
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        {{ form.fecha_hora.label(class="form-label") }}
+                        {{ form.fecha_hora(class="form-control") }}
+
+                        {% for error in form.fecha_hora.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        {{ form.cliente_id.label(class="form-label") }}
+                        {{ form.cliente_id(class="form-select") }}
+
+                        {% for error in form.cliente_id.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        {{ form.mascota_id.label(class="form-label") }}
+                        {{ form.mascota_id(class="form-select") }}
+
+                        {% for error in form.mascota_id.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        {{ form.veterinario_id.label(class="form-label") }}
+                        {{ form.veterinario_id(class="form-select") }}
+
+                        {% for error in form.veterinario_id.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-12 mb-3">
+                        {{ form.motivo.label(class="form-label") }}
+                        {{ form.motivo(class="form-control") }}
+
+                        {% for error in form.motivo.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-12 mb-3">
+                        {{ form.observaciones.label(class="form-label") }}
+                        {{ form.observaciones(
+                            class="form-control",
+                            rows="4"
+                        ) }}
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <div class="d-flex gap-2">
+
+                    {{ form.submit(class="btn btn-primary") }}
+
+                    <a href="{{ url_for('citas.listar') }}"
+                       class="btn btn-outline-secondary">
+                        Cancelar
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

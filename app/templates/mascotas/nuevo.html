@@ -1,0 +1,141 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Registrar mascota | VetCare
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h1 class="fw-bold">Registrar mascota</h1>
+            <p class="text-muted">
+                Introduce la información de la mascota.
+            </p>
+        </div>
+
+        <a href="{{ url_for('mascotas.listar') }}"
+           class="btn btn-secondary">
+            Volver
+        </a>
+
+    </div>
+
+    <div class="card shadow-sm">
+
+        <div class="card-body p-4">
+
+            <form method="POST">
+
+                {{ form.hidden_tag() }}
+
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+
+                        {{ form.nombre.label(class="form-label") }}
+
+                        {{ form.nombre(class="form-control", placeholder="Nombre de la mascota") }}
+
+                        {% for error in form.nombre.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        {{ form.cliente_id.label(class="form-label") }}
+
+                        {{ form.cliente_id(class="form-select") }}
+
+                        {% for error in form.cliente_id.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        {{ form.especie.label(class="form-label") }}
+
+                        {{ form.especie(class="form-select") }}
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        {{ form.raza.label(class="form-label") }}
+
+                        {{ form.raza(class="form-control", placeholder="Ej. Labrador") }}
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        {{ form.sexo.label(class="form-label") }}
+
+                        {{ form.sexo(class="form-select") }}
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        {{ form.fecha_nacimiento.label(class="form-label") }}
+
+                        {{ form.fecha_nacimiento(class="form-control") }}
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        {{ form.color.label(class="form-label") }}
+
+                        {{ form.color(class="form-control", placeholder="Color de la mascota") }}
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        {{ form.peso.label(class="form-label") }}
+
+                        {{ form.peso(class="form-control", placeholder="Peso en kilogramos", step="0.01") }}
+
+                        {% for error in form.peso.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="col-12">
+
+                        {{ form.observaciones.label(class="form-label") }}
+
+                        {{ form.observaciones(class="form-control", rows="3", placeholder="Observaciones adicionales") }}
+
+                    </div>
+
+                </div>
+
+                <hr class="my-4">
+
+                {{ form.submit(class="btn btn-primary px-4") }}
+
+                <a href="{{ url_for('mascotas.listar') }}"
+                   class="btn btn-outline-secondary">
+                    Cancelar
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

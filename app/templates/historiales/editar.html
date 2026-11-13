@@ -1,0 +1,121 @@
+
+{% extends "base.html" %}
+
+{% block title %}Editar historial clínico - VetCare{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2>Editar historial clínico</h2>
+            <p class="text-muted">
+                Modifica la información médica de la mascota.
+            </p>
+        </div>
+
+        <a href="{{ url_for('historiales.listar') }}"
+           class="btn btn-secondary">
+            Volver
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <form method="POST">
+
+                {{ form.hidden_tag() }}
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        {{ form.fecha_consulta.label(class="form-label") }}
+                        {{ form.fecha_consulta(class="form-control") }}
+                        {% for error in form.fecha_consulta.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        {{ form.mascota_id.label(class="form-label") }}
+                        {{ form.mascota_id(class="form-select") }}
+                        {% for error in form.mascota_id.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        {{ form.veterinario_id.label(class="form-label") }}
+                        {{ form.veterinario_id(class="form-select") }}
+                        {% for error in form.veterinario_id.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        {{ form.peso.label(class="form-label") }}
+                        {{ form.peso(class="form-control", step="0.01") }}
+                        {% for error in form.peso.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        {{ form.temperatura.label(class="form-label") }}
+                        {{ form.temperatura(class="form-control", step="0.01") }}
+                        {% for error in form.temperatura.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-12 mb-3">
+                        {{ form.sintomas.label(class="form-label") }}
+                        {{ form.sintomas(class="form-control", rows="3") }}
+                        {% for error in form.sintomas.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-12 mb-3">
+                        {{ form.diagnostico.label(class="form-label") }}
+                        {{ form.diagnostico(class="form-control", rows="3") }}
+                        {% for error in form.diagnostico.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-12 mb-3">
+                        {{ form.tratamiento.label(class="form-label") }}
+                        {{ form.tratamiento(class="form-control", rows="3") }}
+                        {% for error in form.tratamiento.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-12 mb-3">
+                        {{ form.observaciones.label(class="form-label") }}
+                        {{ form.observaciones(class="form-control", rows="3") }}
+                        {% for error in form.observaciones.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                </div>
+
+                <div class="d-flex gap-2">
+                    {{ form.submit(class="btn btn-primary", value="Guardar cambios") }}
+
+                    <a href="{{ url_for('historiales.listar') }}"
+                       class="btn btn-outline-secondary">
+                        Cancelar
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

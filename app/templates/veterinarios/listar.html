@@ -1,0 +1,182 @@
+
+{% extends "base.html" %}
+
+{% block title %}Gestión de veterinarios - VetCare{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2>Gestión de veterinarios</h2>
+            <p class="text-muted">
+                Administra los profesionales registrados en VetCare.
+            </p>
+        </div>
+
+        <a href="{{ url_for('veterinarios.nuevo') }}"
+           class="btn btn-primary">
+            Registrar veterinario
+        </a>
+
+    </div>
+
+    <div class="card shadow-sm">
+
+        <div class="card-body">
+
+            {% if veterinarios %}
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre completo</th>
+                                <th>CI</th>
+                                <th>Teléfono</th>
+                                <th>Correo</th>
+                                <th>Especialidad</th>
+                                <th>Matrícula</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {% for veterinario in veterinarios %}
+
+                                <tr>
+                                    <td>{{ veterinario.id }}</td>
+
+                                    <td>
+                                        {{ veterinario.nombre }}
+                                        {{ veterinario.apellido }}
+                                    </td>
+
+                                    <td>{{ veterinario.ci }}</td>
+
+                                    <td>{{ veterinario.telefono }}</td>
+
+                                    <td>{{ veterinario.email }}</td>
+
+                                    <td>
+                                        {{ veterinario.especialidad or 'No especificada' }}
+                                    </td>
+
+                                    <td>
+                                        {{ veterinario.matricula_profesional }}
+                                    </td>
+
+                                    <td>
+    {% if veterinario.activo %}
+        <span class="badge bg-success">
+            Activo
+        </span>
+    {% else %}
+        <span class="badge bg-danger">
+            Inactivo
+        </span>
+    {% endif %}
+</td>
+
+<td>
+    <div class="d-flex gap-2">
+
+        <a href="{{ url_for('veterinarios.editar', id=veterinario.id) }}"
+           class="btn btn-sm btn-warning">
+            Modificar
+        </a>
+
+        {% if veterinario.activo %}
+
+            <form method="POST"
+                  action="{{ url_for('veterinarios.eliminar', id=veterinario.id) }}"
+                  onsubmit="return confirm('¿Estás seguro de desactivar este veterinario?');">
+
+                <input type="hidden"
+                       name="csrf_token"
+                       value="{{ csrf_token() }}">
+
+                <button type="submit" class="btn btn-sm btn-danger">
+                    Eliminar
+                </button>
+            </form>
+
+        {% else %}
+
+            <form method="POST"
+                  action="{{ url_for('veterinarios.activar', id=veterinario.id) }}"
+                  onsubmit="return confirm('¿Deseas activar este veterinario?');">
+
+                <input type="hidden"
+                       name="csrf_token"
+                       value="{{ csrf_token() }}">
+
+                <button type="submit" class="btn btn-sm btn-success">
+                    Activar
+                </button>
+            </form>
+
+
+        {% endif %}
+
+        <form method="POST"
+              action="{{ url_for('veterinarios.eliminar_definitivamente', id=veterinario.id) }}"
+              onsubmit="return confirm('ADVERTENCIA: Esta acción eliminará definitivamente al veterinario. ¿Deseas continuar?');">
+
+            <input type="hidden"
+                   name="csrf_token"
+                   value="{{ csrf_token() }}">
+
+            <button type="submit" class="btn btn-sm btn-dark">
+                Borrar
+            </button>
+
+        </form>
+
+    </div>
+</td>
+
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            {% else %}
+
+                <div class="text-center py-4">
+
+                    <h5>No hay veterinarios registrados</h5>
+
+                    <p class="text-muted">
+                        Registra el primer profesional veterinario.
+                    </p>
+
+                    <a href="{{ url_for('veterinarios.nuevo') }}"
+                       class="btn btn-primary">
+                        Registrar veterinario
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,165 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Clientes | VetCare
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h1 class="fw-bold">Gestión de clientes</h1>
+
+            <p class="text-muted">
+                Administra los propietarios registrados en VetCare.
+            </p>
+        </div>
+
+        <a href="{{ url_for('clientes.nuevo') }}"
+           class="btn btn-primary">
+            + Registrar cliente
+        </a>
+
+    </div>
+
+    <div class="card shadow-sm">
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-light">
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>CI</th>
+                            <th>Teléfono</th>
+                            <th>Correo</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for cliente in clientes %}
+
+                            <tr>
+
+                                <td>{{ cliente.id }}</td>
+
+                                <td>
+                                    {{ cliente.nombre }}
+                                    {{ cliente.apellido }}
+                                </td>
+
+                                <td>{{ cliente.ci }}</td>
+
+                                <td>{{ cliente.telefono }}</td>
+
+                                <td>
+                                    {{ cliente.email or "No registrado" }}
+                                </td>
+
+                                <td>
+                                    {% if cliente.activo %}
+                                        <span class="badge bg-success">Activo</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">Inactivo</span>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+    <div class="d-flex gap-2">
+
+        <a href="{{ url_for('clientes.editar', id=cliente.id) }}"
+           class="btn btn-sm btn-warning">
+            Modificar
+        </a>
+
+        {% if cliente.activo %}
+
+    <form method="POST"
+          action="{{ url_for('clientes.eliminar', id=cliente.id) }}"
+          onsubmit="return confirm('¿Estás seguro de desactivar este cliente?');">
+
+        <input type="hidden"
+               name="csrf_token"
+               value="{{ csrf_token() }}">
+
+        <button type="submit" class="btn btn-sm btn-danger">
+            Desactivar
+        </button>
+
+    </form>
+
+{% else %}
+
+    <form method="POST"
+          action="{{ url_for('clientes.activar', id=cliente.id) }}"
+          onsubmit="return confirm('¿Deseas activar este cliente?');">
+
+        <input type="hidden"
+               name="csrf_token"
+               value="{{ csrf_token() }}">
+
+        <button type="submit" class="btn btn-sm btn-success">
+            Activar
+        </button>
+
+    </form>
+
+
+        {% endif %}
+
+        <form method="POST"
+              action="{{ url_for('clientes.eliminar_definitivamente', id=cliente.id) }}"
+              onsubmit="return confirm('ADVERTENCIA: Esta acción eliminará definitivamente al cliente. ¿Deseas continuar?');">
+
+            <input type="hidden"
+                   name="csrf_token"
+                   value="{{ csrf_token() }}">
+
+            <button type="submit" class="btn btn-sm btn-dark">
+                Borrar
+            </button>
+
+        </form>
+
+    </div>
+</td>
+
+
+                            </tr>
+
+                        {% else %}
+
+                            <tr>
+                                <td colspan="7" class="text-center text-muted py-4">
+                                    Todavía no hay clientes registrados.
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
